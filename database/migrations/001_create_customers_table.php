@@ -15,6 +15,7 @@ function up_create_customers_table() {
             customer_id INT AUTO_INCREMENT PRIMARY KEY,
             full_name VARCHAR(100) NOT NULL,
             phone VARCHAR(20) UNIQUE,
+            password VARCHAR(255) NOT NULL,
             address TEXT,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
             updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
