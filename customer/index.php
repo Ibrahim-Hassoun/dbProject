@@ -16,6 +16,11 @@ if ($_SESSION['customer_id'] == 1) {
 // Get database connection
 $pdo = require_once __DIR__ . '/../database/connection/db.php';
 
+// Initialize cart if it doesn't exist
+if (!isset($_SESSION['cart'])) {
+    $_SESSION['cart'] = [];
+}
+
 // Get menu items
 try {
     $stmt = $pdo->query("SELECT * FROM menu_items WHERE in_stock > 0 ORDER BY item_name");
@@ -29,6 +34,12 @@ try {
 } catch (PDOException $e) {
     $menu_items = [];
     $categories = [];
+}
+
+// Get cart count
+$cart_count = 0;
+if (isset($_SESSION['cart']) && is_array($_SESSION['cart'])) {
+    $cart_count = array_sum(array_column($_SESSION['cart'], 'quantity'));
 }
 ?>
 <!DOCTYPE html>
@@ -193,6 +204,36 @@ try {
             background: #e04556;
         }
         
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            width: 100%;
+        }
+        
+        .quantity-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .quantity-btn:hover {
+            background: #5568d3;
+        }
+        
+        .quantity-display {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+        }
+        
         .cart-widget {
             position: fixed;
             bottom: 30px;
@@ -252,9 +293,29 @@ try {
                                 <div class="item-name"><?php echo htmlspecialchars($item['item_name']); ?></div>
                                 <div class="item-description"><?php echo htmlspecialchars($item['description'] ?? ''); ?></div>
                                 <div class="item-price">$<?php echo number_format($item['price'], 2); ?></div>
-                                <button class="add-to-cart" onclick="addToCart(<?php echo $item['item_id']; ?>)">
-                                    Add to Cart
-                                </button>
+                                
+                                <?php
+                                $item_id = $item['item_id'];
+                                $in_cart = isset($_SESSION['cart'][$item_id]);
+                                $quantity = $in_cart ? $_SESSION['cart'][$item_id]['quantity'] : 0;
+                                ?>
+                                
+                                <?php if ($in_cart): ?>
+                                    <form method="POST" action="quick_cart_action.php" style="margin: 0;">
+                                        <input type="hidden" name="item_id" value="<?php echo $item_id; ?>">
+                                        <div class="quantity-controls">
+                                            <button type="submit" name="action" value="decrease" class="quantity-btn">-</button>
+                                            <span class="quantity-display"><?php echo $quantity; ?> in cart</span>
+                                            <button type="submit" name="action" value="increase" class="quantity-btn">+</button>
+                                        </div>
+                                    </form>
+                                <?php else: ?>
+                                    <form method="POST" action="quick_cart_action.php" style="margin: 0;">
+                                        <input type="hidden" name="item_id" value="<?php echo $item_id; ?>">
+                                        <input type="hidden" name="action" value="add">
+                                        <button type="submit" class="add-to-cart">Add to Cart</button>
+                                    </form>
+                                <?php endif; ?>
                             </div>
                         <?php endforeach; ?>
                     </div>
@@ -264,40 +325,7 @@ try {
     </div>
     
     <div class="cart-widget" onclick="location.href='cart.php'">
-        🛒 Cart <span class="cart-count" id="cart-count">0</span>
+        🛒 Cart <span class="cart-count"><?php echo $cart_count; ?></span>
     </div>
-    
-    <script>
-        function addToCart(itemId) {
-            // Send AJAX request to add item to cart
-            fetch('add_to_cart.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: 'item_id=' + itemId
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    updateCartCount();
-                    alert('Item added to cart!');
-                } else {
-                    alert('Error adding item to cart');
-                }
-            });
-        }
-        
-        function updateCartCount() {
-            fetch('get_cart_count.php')
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('cart-count').textContent = data.count || 0;
-                });
-        }
-        
-        // Update cart count on page load
-        updateCartCount();
-    </script>
 </body>
 </html>
