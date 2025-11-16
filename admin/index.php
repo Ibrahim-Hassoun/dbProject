@@ -3,7 +3,7 @@ session_start();
 
 // Check if user is logged in and is admin (ID = 1)
 if (!isset($_SESSION['customer_id']) || $_SESSION['customer_id'] != 1) {
-    header('Location: ../register/index.html');
+    header('Location: ../login/index.html');
     exit;
 }
 

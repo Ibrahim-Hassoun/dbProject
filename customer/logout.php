@@ -1,5 +1,5 @@
 <?php
 session_start();
 session_destroy();
-header('Location: ../register/index.html');
+header('Location: ../login/index.html?logout=1');
 exit;

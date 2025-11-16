@@ -64,19 +64,8 @@ try {
     // Get the new customer ID
     $customer_id = $pdo->lastInsertId();
     
-    // Store user info in session
-    $_SESSION['customer_id'] = $customer_id;
-    $_SESSION['full_name'] = $full_name;
-    $_SESSION['phone'] = $phone;
-    
-    // Redirect based on customer ID
-    if ($customer_id == 1) {
-        // Admin user
-        header('Location: ../admin/index.php');
-    } else {
-        // Regular customer
-        header('Location: ../customer/index.php');
-    }
+    // Registration successful - redirect to login
+    header('Location: ../login/index.html?registered=1');
     exit;
     
 } catch (PDOException $e) {
