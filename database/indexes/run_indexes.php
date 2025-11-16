@@ -14,9 +14,9 @@ echo "Starting index creation...\n\n";
 try {
     // Index files
     $indexes = [
-        'idx_customers_phone_unique.php',
-        'idx_menu_items_name.php',
-        'idx_orders_customer_status_composite.php'
+        'unique_index_customers_phone.php',
+        'non_clustered_index_menu_items.php',
+        'composite_index_orders_customer_status.php'
     ];
     
     foreach ($indexes as $index) {
