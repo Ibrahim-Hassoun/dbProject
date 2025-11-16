@@ -5,9 +5,6 @@
  * Created: 2025-11-16
  */
 
-// Get database connection
-$pdo = require_once __DIR__ . '/../connection/db.php';
-
 function up_create_customers_table() {
     global $pdo;
     $sql = "

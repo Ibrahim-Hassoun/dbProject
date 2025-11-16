@@ -31,7 +31,7 @@ try {
             $functionName = 'up_' . str_replace('.php', '', substr($migration, 4));
             
             if (function_exists($functionName)) {
-                $functionName($pdo);
+                $functionName();
             } else {
                 echo "Warning: Function {$functionName} not found in {$migration}\n";
             }
