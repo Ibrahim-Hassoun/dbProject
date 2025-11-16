@@ -5,8 +5,8 @@
  * Creates 4 sample customers
  */
 
-// Get database connection
-$pdo = require_once __DIR__ . '/../connection/db.php';
+// Use global PDO connection
+global $pdo;
 
 // Sample customers data
 $customers = [
@@ -84,5 +84,5 @@ try {
     
 } catch (PDOException $e) {
     echo "Error seeding customers: " . $e->getMessage() . "\n";
-    exit(1);
+    return;
 }

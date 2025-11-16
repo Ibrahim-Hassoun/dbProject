@@ -5,8 +5,8 @@
  * Creates the admin user with ID = 1
  */
 
-// Get database connection
-$pdo = require_once __DIR__ . '/../connection/db.php';
+// Use global PDO connection
+global $pdo;
 
 try {
     // Check if admin already exists
@@ -15,7 +15,7 @@ try {
     
     if ($stmt->fetch()) {
         echo "Admin user already exists (ID: 1)\n";
-        exit;
+        return;
     }
     
     // Admin credentials
@@ -39,5 +39,5 @@ try {
     
 } catch (PDOException $e) {
     echo "Error creating admin user: " . $e->getMessage() . "\n";
-    exit(1);
+    return;
 }

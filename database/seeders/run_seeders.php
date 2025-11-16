@@ -47,6 +47,18 @@ echo "----------------------------------------\n";
 require_once __DIR__ . '/seed_customers.php';
 echo "\n";
 
+// Seed menu items
+echo "3. Seeding Menu Items...\n";
+echo "----------------------------------------\n";
+require_once __DIR__ . '/seed_menu_items.php';
+echo "\n";
+
+// Seed orders (must come after customers and menu items)
+echo "4. Seeding Orders...\n";
+echo "----------------------------------------\n";
+require_once __DIR__ . '/seed_orders.php';
+echo "\n";
+
 echo "========================================\n";
 echo "All seeders completed!\n";
-echo "========================================\n";
+echo "========================================";
