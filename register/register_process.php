@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 /**
  * Registration Process
@@ -60,8 +61,22 @@ try {
     
     $stmt->execute([$full_name, $phone, $password_hash, $address]);
     
-    // Registration successful
-    header('Location: index.html?success=1');
+    // Get the new customer ID
+    $customer_id = $pdo->lastInsertId();
+    
+    // Store user info in session
+    $_SESSION['customer_id'] = $customer_id;
+    $_SESSION['full_name'] = $full_name;
+    $_SESSION['phone'] = $phone;
+    
+    // Redirect based on customer ID
+    if ($customer_id == 1) {
+        // Admin user
+        header('Location: ../admin/index.php');
+    } else {
+        // Regular customer
+        header('Location: ../customer/index.php');
+    }
     exit;
     
 } catch (PDOException $e) {
