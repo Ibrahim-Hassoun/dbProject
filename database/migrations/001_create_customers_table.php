@@ -5,7 +5,11 @@
  * Created: 2025-11-16
  */
 
-function up_create_customers_table($pdo) {
+// Get database connection
+$pdo = require_once __DIR__ . '/../connection/db.php';
+
+function up_create_customers_table() {
+    global $pdo;
     $sql = "
         CREATE TABLE IF NOT EXISTS customers (
             customer_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -21,7 +25,8 @@ function up_create_customers_table($pdo) {
     echo "Table 'customers' created successfully.\n";
 }
 
-function down_create_customers_table($pdo) {
+function down_create_customers_table() {
+    global $pdo;
     $sql = "DROP TABLE IF EXISTS customers";
     $pdo->exec($sql);
     echo "Table 'customers' dropped successfully.\n";

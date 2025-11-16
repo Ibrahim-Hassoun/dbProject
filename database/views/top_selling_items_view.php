@@ -6,7 +6,11 @@
  * Created: 2025-11-16
  */
 
-function create_top_selling_items_view($pdo) {
+// Get database connection
+$pdo = require_once __DIR__ . '/../connection/db.php';
+
+function create_top_selling_items_view() {
+    global $pdo;
     // Drop view if exists
     $pdo->exec("DROP VIEW IF EXISTS top_selling_items");
     
@@ -26,7 +30,8 @@ function create_top_selling_items_view($pdo) {
     echo "View 'top_selling_items' created successfully.\n";
 }
 
-function drop_top_selling_items_view($pdo) {
+function drop_top_selling_items_view() {
+    global $pdo;
     $sql = "DROP VIEW IF EXISTS top_selling_items";
     $pdo->exec($sql);
     echo "View 'top_selling_items' dropped successfully.\n";

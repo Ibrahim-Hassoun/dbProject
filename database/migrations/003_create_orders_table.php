@@ -5,7 +5,11 @@
  * Created: 2025-11-16
  */
 
-function up_create_orders_table($pdo) {
+// Get database connection
+$pdo = require_once __DIR__ . '/../connection/db.php';
+
+function up_create_orders_table() {
+    global $pdo;
     $sql = "
         CREATE TABLE IF NOT EXISTS orders (
             order_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -27,7 +31,8 @@ function up_create_orders_table($pdo) {
     echo "Table 'orders' created successfully.\n";
 }
 
-function down_create_orders_table($pdo) {
+function down_create_orders_table() {
+    global $pdo;
     $sql = "DROP TABLE IF EXISTS orders";
     $pdo->exec($sql);
     echo "Table 'orders' dropped successfully.\n";

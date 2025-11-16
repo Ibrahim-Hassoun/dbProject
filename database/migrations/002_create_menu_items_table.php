@@ -5,7 +5,11 @@
  * Created: 2025-11-16
  */
 
-function up_create_menu_items_table($pdo) {
+// Get database connection
+$pdo = require_once __DIR__ . '/../connection/db.php';
+
+function up_create_menu_items_table() {
+    global $pdo;
     $sql = "
         CREATE TABLE IF NOT EXISTS menu_items (
             item_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -22,7 +26,8 @@ function up_create_menu_items_table($pdo) {
     echo "Table 'menu_items' created successfully.\n";
 }
 
-function down_create_menu_items_table($pdo) {
+function down_create_menu_items_table() {
+    global $pdo;
     $sql = "DROP TABLE IF EXISTS menu_items";
     $pdo->exec($sql);
     echo "Table 'menu_items' dropped successfully.\n";

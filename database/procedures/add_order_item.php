@@ -6,7 +6,11 @@
  * Created: 2025-11-16
  */
 
-function create_add_order_item_procedure($pdo) {
+// Get database connection
+$pdo = require_once __DIR__ . '/../connection/db.php';
+
+function create_add_order_item_procedure() {
+    global $pdo;
     // Drop procedure if exists
     $pdo->exec("DROP PROCEDURE IF EXISTS add_order_item");
     
@@ -42,8 +46,16 @@ function create_add_order_item_procedure($pdo) {
     echo "Procedure 'add_order_item' created successfully.\n";
 }
 
-function drop_add_order_item_procedure($pdo) {
+function drop_add_order_item_procedure() {
+    global $pdo;
     $sql = "DROP PROCEDURE IF EXISTS add_order_item";
     $pdo->exec($sql);
     echo "Procedure 'add_order_item' dropped successfully.\n";
+}
+
+function use_add_order_item($item_id, $quantity) {
+    global $pdo;
+    $stmt = $pdo->prepare("CALL add_order_item(?, ?)");
+    $stmt->execute([$item_id, $quantity]);
+    return true;
 }

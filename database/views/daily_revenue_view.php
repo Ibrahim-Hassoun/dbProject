@@ -6,7 +6,11 @@
  * Created: 2025-11-16
  */
 
-function create_daily_revenue_view($pdo) {
+// Get database connection
+$pdo = require_once __DIR__ . '/../connection/db.php';
+
+function create_daily_revenue_view() {
+    global $pdo;
     // Drop view if exists
     $pdo->exec("DROP VIEW IF EXISTS daily_revenue");
     
@@ -25,7 +29,8 @@ function create_daily_revenue_view($pdo) {
     echo "View 'daily_revenue' created successfully.\n";
 }
 
-function drop_daily_revenue_view($pdo) {
+function drop_daily_revenue_view() {
+    global $pdo;
     $sql = "DROP VIEW IF EXISTS daily_revenue";
     $pdo->exec($sql);
     echo "View 'daily_revenue' dropped successfully.\n";

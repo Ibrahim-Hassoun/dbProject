@@ -6,7 +6,11 @@
  * Created: 2025-11-16
  */
 
-function create_trg_update_order_total($pdo) {
+// Get database connection
+$pdo = require_once __DIR__ . '/../connection/db.php';
+
+function create_trg_update_order_total() {
+    global $pdo;
     // Drop trigger if exists
     $pdo->exec("DROP TRIGGER IF EXISTS trg_update_order_total");
     
@@ -25,7 +29,8 @@ function create_trg_update_order_total($pdo) {
     echo "Trigger 'trg_update_order_total' created successfully.\n";
 }
 
-function drop_trg_update_order_total($pdo) {
+function drop_trg_update_order_total() {
+    global $pdo;
     $sql = "DROP TRIGGER IF EXISTS trg_update_order_total";
     $pdo->exec($sql);
     echo "Trigger 'trg_update_order_total' dropped successfully.\n";
