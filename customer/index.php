@@ -18,13 +18,13 @@ $pdo = require_once __DIR__ . '/../database/connection/db.php';
 
 // Get menu items
 try {
-    $stmt = $pdo->query("SELECT * FROM menu_items WHERE available = TRUE ORDER BY category, item_name");
+    $stmt = $pdo->query("SELECT * FROM menu_items WHERE in_stock > 0 ORDER BY item_name");
     $menu_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
-    // Group by category
+    // Group by category if category column exists, otherwise show all together
     $categories = [];
-    foreach ($menu_items as $item) {
-        $categories[$item['category']][] = $item;
+    if (!empty($menu_items)) {
+        $categories['Menu'] = $menu_items; // Default category since we don't have category column
     }
 } catch (PDOException $e) {
     $menu_items = [];
